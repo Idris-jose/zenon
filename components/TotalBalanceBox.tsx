@@ -1,0 +1,28 @@
+'use client';
+import DoughnutChart from "./DonutChart";
+import AnimatedCounter from "./AnimatedCounter";
+
+
+export default function TotalBalanceBox({accounts =[],totalBanks,totalCurrentBalance}: TotalBalanceBoxProps) {
+  return (
+<section className="total-balance drop-shadow-[0_4px_12px_rgba(0,0,0,0.08)] ">
+ <div className="total-balance-chart">
+    <DoughnutChart accounts={accounts}/>
+ </div>
+
+ <div className="flex flex-col gap-6">
+    <h2 className="header-2">
+        Bank Accounts: {totalBanks}
+    </h2>
+    <div className="flex flex-col gap-2">
+       <p className="total-balance-label">
+        Total Current Balance
+       </p>
+       <div className="total-balance-amount flex-center gap-2">
+        <AnimatedCounter amount={totalCurrentBalance}/>
+       </div>
+    </div>
+ </div>
+</section>
+  );
+}

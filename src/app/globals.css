@@ -1,0 +1,806 @@
+@import "tailwindcss";
+/* --- Custom Design Tokens (replaces tailwind.config.ts) --- */
+:root {
+  /* === Colors === */
+  --color-fill-1: rgba(255, 255, 255, 0.10);
+
+  --color-bank-gradient: #0179FE;
+
+  --color-indigo-500: #6172F3;
+  --color-indigo-700: #3538CD;
+
+  --color-success-25: #F6FEF9;
+  --color-success-50: #ECFDF3;
+  --color-success-100: #D1FADF;
+  --color-success-600: #039855;
+  --color-success-700: #027A48;
+  --color-success-900: #054F31;
+
+  --color-pink-25: #FEF6FB;
+  --color-pink-100: #FCE7F6;
+  --color-pink-500: #EE46BC;
+  --color-pink-600: #DD2590;
+  --color-pink-700: #C11574;
+  --color-pink-900: #851651;
+
+  --color-blue-25: #F5FAFF;
+  --color-blue-100: #D1E9FF;
+  --color-blue-500: #2E90FA;
+  --color-blue-600: #1570EF;
+  --color-blue-700: #175CD3;
+  --color-blue-900: #194185;
+
+  --color-sky-1: #F3F9FF;
+
+  --color-black-1: #00214F;
+  --color-black-2: #344054;
+
+  --color-gray-25: #FCFCFD;
+  --color-gray-200: #EAECF0;
+  --color-gray-300: #D0D5DD;
+  --color-gray-500: #667085;
+  --color-gray-600: #475467;
+  --color-gray-700: #344054;
+  --color-gray-900: #101828;
+
+  /* === Backgrounds === */
+  --bg-bank-gradient: linear-gradient(90deg, #0179FE 0%, #4893FF 100%);
+  --bg-gradient-mesh: url('/icons/gradient-mesh.svg');
+  --bg-bank-green-gradient: linear-gradient(90deg, #01797A 0%, #489399 100%);
+
+  /* === Box Shadows === */
+  --shadow-form: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  --shadow-chart: 0px 1px 3px 0px rgba(16, 24, 40, 0.10),
+                   0px 1px 2px 0px rgba(16, 24, 40, 0.06);
+  --shadow-profile: 0px 12px 16px -4px rgba(16, 24, 40, 0.08),
+                    0px 4px 6px -2px rgba(16, 24, 40, 0.03);
+  --shadow-creditCard: 8px 10px 16px 0px rgba(0, 0, 0, 0.05);
+
+  /* === Fonts === */
+  --font-inter: var(--font-inter);
+  --font-archivo: var(--font-archivo);
+  --font-ibm-plex-serif: var(--font-ibm-plex-serif);
+
+  /* === Animations === */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+}
+
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+
+/* ---------- BASE LAYER ---------- */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: var(--font-inter);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-archivo);
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .glassmorphism {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    border-radius: 2px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #dddddd;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #5c5c7b;
+    border-radius: 50px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #7878a3;
+  }
+}
+
+/* ---------- UTILITIES LAYER ---------- */
+@layer utilities {
+  /* ---- Text & Layout Helpers ---- */
+  .heading {
+    font-size: 1.875rem; /* text-3xl */
+    font-weight: 700;    /* font-bold */
+    text-decoration: underline; /* underline */      /* text-green-500 */
+  }
+
+  .flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .text-10 {
+    font-size: 10px;
+    line-height: 14px;
+  }
+  .text-12 {
+    font-size: 12px;
+    line-height: 16px;
+  }
+  .text-14 {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .text-16 {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .text-18 {
+    font-size: 18px;
+    line-height: 22px;
+  }
+  .text-20 {
+    font-size: 20px;
+    line-height: 24px;
+  }
+  .text-24 {
+    font-size: 24px;
+    line-height: 30px;
+  }
+  .text-26 {
+    font-size: 26px;
+    line-height: 32px;
+  }
+  .text-30 {
+    font-size: 30px;
+    line-height: 38px;
+  }
+  .text-36 {
+    font-size: 36px;
+    line-height: 44px;
+  }
+
+  .header-2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a202c;
+  }
+  .text14_padding10 {
+    font-size: 14px;
+    line-height: 20px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+    font-weight: 600;
+  }
+
+  .input-class {
+    font-size: 16px;
+    line-height: 24px;
+    border-radius: 0.5rem;
+    border: 1px solid #d1d5db;
+    color: #111827;
+    padding: 0.5rem 1rem;
+  }
+  .input-class::placeholder {
+    font-size: 16px;
+    line-height: 24px;
+    color: #6b7280;
+  }
+
+  .sheet-content button {
+    outline: none;
+    border: none;
+    box-shadow: none;
+  }
+
+  /* ---- Home ---- */
+  .home {
+    overflow: auto;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    max-height: 100vh;
+  }
+
+  .home-content {
+    overflow: auto;
+    display: flex;
+    width: 100%;
+    flex: 1 1 0%;
+    flex-direction: column;
+    gap: 2rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+
+  .home-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  /* ---- Total Balance ---- */
+  .total-balance {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid #e5e7eb;
+    padding: 1rem;
+    box-shadow: 0 2px 8px 0 rgba(60,72,88,0.08);
+  }
+
+  .total-balance-chart {
+    display: flex;
+    width: 100%;
+    max-width: 100px;
+    align-items: center;
+  }
+
+  .total-balance-label {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    color: #6b7280;
+  }
+  .total-balance-amount {
+    font-size: 24px;
+    line-height: 30px;
+    flex: 1 1 0%;
+    font-weight: 600;
+    color: #1a202c;
+  }
+
+  /* ---- Recent Transactions ---- */
+  .recent-transactions {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .view-all-btn {
+    font-size: 14px;
+    line-height: 20px;
+    border-radius: 0.5rem;
+    border: 1px solid #d1d5db;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+    font-weight: 600;
+    color: #374151;
+  }
+  .recent-transactions-label {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 600;
+    color: #1a202c;
+  }
+  .recent-transactions-tablist {
+    margin-bottom: 2rem;
+    display: flex;
+    width: 100%;
+    flex-wrap: nowrap;
+  }
+
+  /* ---- Right Sidebar ---- */
+  .right-sidebar {
+    display:block;
+    height: 100vh;
+    max-height: 100vh;
+    flex-direction: column;
+    border-left: 1px solid #e5e7eb;
+    width: 355px;
+    overflow-y: auto;
+  }
+
+  .profile-banner {
+    height: 120px;
+    width: 100%;
+    background: linear-gradient(90deg, #e0e7ff 0%, #f1f5f9 100%);
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .profile {
+    position: relative;
+    display: flex;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .profile-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -2rem;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 9999px;
+    background-color: #f3f4f6;
+    border: 8px solid #fff;
+    padding: 0.5rem;
+    box-shadow: 0 2px 8px 0 rgba(60,72,88,0.08);
+  }
+  .profile-details {
+    display: flex;
+    flex-direction: column;
+    padding-top: 6rem;
+  }
+  .profile-name {
+    font-size: 24px;
+    line-height: 30px;
+    font-weight: 600;
+    color: #1a202c;
+  }
+  .profile-email {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    color: #6b7280;
+  }
+  .banks {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  /* ---- My Banks ---- */
+  .my-banks {
+    display: flex;
+    height: 100vh;
+    max-height: 100vh;
+    width: 100%;
+    flex-direction: column;
+    gap: 2rem;
+    background-color: #f8fafc;
+    padding: 2rem;
+  }
+
+  /* ---- Transactions ---- */
+  .transactions {
+    display: flex;
+    max-height: 100vh;
+    width: 100%;
+    flex-direction: column;
+    gap: 2rem;
+    overflow-y: auto;
+    background-color: #f8fafc;
+    padding: 2rem;
+  }
+  .transactions-header {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  .transactions-account {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1px solid #2563eb;
+    border-bottom: 1px solid #2563eb;
+    background-color: #2563eb;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+  .transactions-account-balance {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.375rem;
+    background-color: rgba(59,130,246,0.2);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    color: #fff;
+  }
+
+  /* ---- Header Box ---- */
+  .header-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .header-box-title {
+    font-size: 24px;
+    line-height: 30px;
+    font-weight: 600;
+    color: #1a202c;
+  }
+  .header-box-subtext {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    color: #6b7280;
+  }
+
+  /* ---- Bank Card ---- */
+  .bank-card {
+    position: relative;
+    display: flex;
+    height: 190px;
+    width: 100%;
+    max-width: 320px;
+    justify-content: space-between;
+    border-radius: 20px;
+    border: 1px solid #fff;
+    background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%);
+    box-shadow: 0 4px 24px 0 rgba(60,72,88,0.12);
+    backdrop-filter: blur(6px);
+  }
+  .bank-card_content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    width: 100%;
+    max-width: 228px;
+    flex-direction: column;
+    justify-content: space-between;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    background-color: #374151;
+    background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%);
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    padding-bottom: 1rem;
+    padding-top: 1.25rem;
+  }
+  .bank-card_icon {
+    display: flex;
+    width: 100%;
+    flex: 1 1 0%;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  /* ---- Bank Info ---- */
+  .bank-info {
+    gap: 18px;
+    display: flex;
+    padding: 1rem;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    background-color: #eff6ff;
+  }
+
+  /* ---- Category Badge ---- */
+  .category-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    width: fit-content;
+    gap: 0.25rem;
+    border-radius: 1rem;
+    border: 1.5px solid #d1d5db;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 0.375rem;
+    padding-right: 0.5rem;
+  }
+
+  .banktab-item {
+    gap: 18px;
+    border-bottom: 2px solid #d1d5db;
+    display: flex;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    transition: all 0.2s;
+  }
+
+  /* ---- Mobile Nav ---- */
+  .mobilenav-sheet {
+    display: flex;
+    height: calc(100vh - 72px);
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+  }
+  .mobilenav-sheet_close {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    max-width: 20rem;
+  }
+
+  /* ---- PlaidLink ---- */
+  .plaidlink-primary {
+    font-size: 16px;
+    line-height: 24px;
+    border-radius: 0.5rem;
+    border: 1px solid #6366f1;
+    background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%);
+    font-weight: 600;
+    color: #fff;
+    box-shadow: 0 2px 8px 0 rgba(60,72,88,0.08);
+  }
+  .plaidlink-ghost {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    border-radius: 0.5rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+  .plaidlink-default {
+    display: flex;
+    justify-content: flex-start !important;
+    cursor: pointer;
+    gap: 0.75rem;
+    border-radius: 0.5rem;
+    background: transparent !important;
+    flex-direction: row;
+  }
+
+  /* ---- Auth ---- */
+  .auth-asset {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: #f0f9ff;
+  }
+
+  .auth-form {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 420px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.25rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .form-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+  .form-label {
+    font-size: 14px;
+    line-height: 20px;
+    width: 100%;
+    max-width: 280px;
+    font-weight: 500;
+    color: #374151;
+  }
+  .form-message {
+    font-size: 12px;
+    line-height: 16px;
+    color: #ef4444;
+  }
+  .form-btn {
+    font-size: 16px;
+    line-height: 24px;
+    border-radius: 0.5rem;
+    border: 1px solid #6366f1;
+    background: linear-gradient(90deg, #ff9305 0%, #f8b781 100%);
+    font-weight: 600;
+    color: #fff;
+    box-shadow: 0 2px 8px 0 rgba(60,72,88,0.08);
+  }
+  .form-link {
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #6366f1;
+  }
+
+  /* ---- Payment Transfer ---- */
+  .payment-transfer {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #f8fafc;
+    padding: 2rem;
+    max-height: 100vh;
+  }
+  .payment-transfer_form-item {
+    display: flex;
+    width: 100%;
+    max-width: 850px;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .payment-transfer_form-content {
+    display: flex;
+    width: 100%;
+    max-width: 280px;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .payment-transfer_form-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    border-top: 1px solid #e5e7eb;
+    padding-bottom: 1.25rem;
+    padding-top: 1.5rem;
+  }
+  .payment-transfer_btn-box {
+    margin-top: 1.25rem;
+    display: flex;
+    width: 100%;
+    max-width: 850px;
+    gap: 0.75rem;
+    border-color: #e5e7eb;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+  .payment-transfer_btn {
+    font-size: 14px;
+    line-height: 20px;
+    width: 100%;
+    background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%);
+    font-weight: 600;
+    color: #fff;
+    box-shadow: 0 2px 8px 0 rgba(60,72,88,0.08);
+  }
+
+  /* ---- Root Layout ---- */
+  .root-layout {
+    display: flex;
+    height: 4rem;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    box-shadow: 0 4px 24px 0 rgba(60,72,88,0.12);
+  }
+
+  /* ---- Footer ---- */
+  .footer {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+  .footer_name {
+    display: flex;
+    width: 2.5rem;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background-color: #e5e7eb;
+  }
+  .footer_email {
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .footer_name-mobile {
+    display: flex;
+    width: 2.5rem;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background-color: #e5e7eb;
+  }
+  .footer_email-mobile {
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .footer_image {
+    position: relative;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  .footer_image-mobile {
+    position: relative;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  /* ---- Sidebar ---- */
+  .sidebar {
+    position: sticky;
+    left: 0;
+    top: 0;
+    display: flex;
+    height: 100vh;
+    width: fit-content;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid #e5e7eb;
+    background-color: #fff;
+    padding-top: 2rem;
+    color: #fff;
+  }
+  .sidebar-logo {
+    font-size: 26px;
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: bold;
+    color: #111827;
+  }
+  .sidebar-link {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    border-radius: 0.5rem;
+    justify-content: center;
+  }
+  .sidebar-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+  }
+}
