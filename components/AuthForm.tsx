@@ -19,7 +19,7 @@ export default function AuthForm({ type }:{ type:string}) {
   const router =useRouter()
     const [user,setUser] = useState(null)  
     const [isLoading,setIsLoading]= useState(false)
-
+    
      const authformschema = formSchema(type);
 
       // 1. Define your form.
@@ -45,14 +45,14 @@ export default function AuthForm({ type }:{ type:string}) {
       setUser(newUser)
       }
 
-       if(type === 'signin'){
-       const response = await signIn({
-         email: data.email,
-         password: data.password
-      })
-          
-     if(response) router.push('/')
-      }
+     if(type === 'signin'){
+     // await signIn({
+       // email: data.email,
+       // password: data.password
+     // });
+        
+      router.push('/')
+    }
 
     console.log(data)
     setIsLoading(false)
