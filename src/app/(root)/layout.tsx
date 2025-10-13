@@ -4,7 +4,8 @@ import "../globals.css";
 import Sidebar from "../../../components/Sidebar";
 import MobileNav from "../../../components/MobileNav";
 import Image from "next/image";
-
+import { getLoggedInUser } from "../../../lib/actions/user.actions";
+import { redirect } from "next/navigation";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,49 +22,47 @@ export const metadata: Metadata = {
   description: "Banking made easy",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  const loggedIn = await getLoggedInUser();
 
-  const loggedIn = { firstname: 'idris', lastname: 'jose'}
+  
+  if (!loggedIn) redirect("/sign-in");
+
   return (
     <html lang="en">
-     <body className={`${archivo.variable} ${inter.variable} antialiased`}>
-  <main className="flex h-screen w-full font-archivo">
-    {/* Sidebar — visible only on desktop */}
-    <div className="hidden md:block">
-      <Sidebar user={loggedIn} />
-    </div>
+      <body className={`${archivo.variable} ${inter.variable} antialiased`}>
+        <main className="flex h-screen w-full font-archivo">
+          {/* Sidebar — visible only on desktop */}
+          <div className="hidden md:block">
+            <Sidebar user={loggedIn as unknown as User} />
+          </div>
 
-    {/* Main content */}
-    <div className="flex size-full flex-col">
-      {/* Top bar */}
-      <div className="block md:hidden">
-        <div className="root-layout flex items-center justify-between p-4">
-        <Image
-          src="/icons/logo.svg"
-          width={30}
-          height={30}
-          alt="menu icon"
-          className="md:hidden"
-        />
+          {/* Main content */}
+          <div className="flex size-full flex-col">
+            {/* Top bar */}
+            <div className="block md:hidden">
+              <div className="root-layout flex items-center justify-between p-4">
+                <Image
+                  src="/icons/logo.svg"
+                  width={30}
+                  height={30}
+                  alt="Zenon logo"
+                  className="md:hidden"
+                />
+                {/* Mobile nav — visible only on mobile */}
+                <MobileNav user={loggedIn as unknown as User} />
+              </div>
+            </div>
 
-        {/* Mobile nav — visible only on mobile */}
-        <div className="">
-          <MobileNav user={loggedIn} />
-        </div>
-      </div>
-      </div>
-      
-
-      {/* Page content */}
-      {children}
-    </div>
-  </main>
-</body>
-
+            {/* Page content */}
+            {children}
+          </div>
+        </main>
+      </body>
     </html>
   );
 }

@@ -4,21 +4,20 @@ import Link from "next/link";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { email, z } from "zod"
+import { z } from "zod"
 import { Button } from "@/components/ui/button"
-import { FormSchemaType,formSchema } from "../lib/validation";
+import { formSchema } from "../lib/validation";
 import {Form,} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
  import CustomInput from "./CustomInput";
 import { Loader2 } from "lucide-react";
-import { error } from "console";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "../lib/actions/user.actions";
 
 export default function AuthForm({ type }:{ type:string}) {
   const router =useRouter()
-    const [user,setUser] = useState(null)  
+    const [user,setUser] = useState<unknown>(null)
     const [isLoading,setIsLoading]= useState(false)
+    const [error,setError] = useState('')
     
      const authformschema = formSchema(type);
 
@@ -36,9 +35,10 @@ export default function AuthForm({ type }:{ type:string}) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setIsLoading(true)
+    setError('')
     try {
       //sign up with appwright & create plaid token
-      
+
       if(type === 'signUp'){
      const newUser = await signUp(data);
 
@@ -46,24 +46,25 @@ export default function AuthForm({ type }:{ type:string}) {
       }
 
      if(type === 'signin'){
-     // await signIn({
-       // email: data.email,
-       // password: data.password
-     // });
-        
+      await signIn({
+        email: data.email,
+        password: data.password
+      });
+
       router.push('/')
     }
 
     console.log(data)
     setIsLoading(false)
-    } catch (error) {
+    } catch (error: unknown) {
+      const err = error as Error;
+      setError(err.message || 'An error occurred. Please try again.')
       console.log(error)
     } finally{
       setIsLoading(false)
     }
-   
+
   }
-8
     return(
         <section className="auth-form">
           <header className="flex flex-col gap-5 md:gap-8">
@@ -93,13 +94,15 @@ export default function AuthForm({ type }:{ type:string}) {
           </header>
           {user ? (
             <div className="flex flex-col gap-4">
-                  {/* Bank linking component */}
+              <Button onClick={() => router.push('/my-banks')} className="bg-[#FF7A00] p-5 font-bold text-lg text-white cursor-pointer">
+                Link Bank Account
+              </Button>
             </div>
         ):(
             <>
                     <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                
+
                             {type === "signUp" ? (
               <>
               <div className="flex gap-4">
@@ -135,12 +138,14 @@ export default function AuthForm({ type }:{ type:string}) {
                     <>
                     <Loader2 size={20}
                     className="animate-spin"
-                    /> 
+                    />
                     </>
-                  ) : type === 'signin' ? 'sign in' : 'sign up'} 
+                  ) : type === 'signin' ? 'sign in' : 'sign up'}
                   </Button>
                 </div>
-           
+
+                {error && <p className="text-red-500 text-center">{error}</p>}
+
             </form>
             </Form>
            <footer className="flex justify-center items-center gap-1">

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Archivo } from "next/font/google";
 import "../globals.css";
+import { redirect } from "next/navigation";
+import { getLoggedInUser } from "../../../lib/actions/user.actions";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -17,11 +19,16 @@ export const metadata: Metadata = {
   description: "Sign in or sign up to Zenon",
 };
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+   const loggedIn = await getLoggedInUser();
+  
+    
+    if (!loggedIn) redirect("/sign-in");
   return (
     <html lang="en">
       <body className={`${archivo.variable} ${inter.variable} antialiased`}>
