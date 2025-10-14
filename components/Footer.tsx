@@ -24,10 +24,10 @@ export default function Footer({user, type = 'desktop'}:FooterProps){
 
          <div className={type === 'mobile' ? 'footer_email-mobile' : 'footer_email'}>
             <h1 className="text-12 truncate font-semibold text-gray-600">
-                {user.firstName || 'idris'} {user.lastName || 'jose'}
+                {user?.firstName || 'idris'} {user?.lastName || 'jose'}
             </h1>
             <p className="text-12 truncate font-normal text-gray-600">
-               {user.email || 'idrisjose11@gmail.com'}
+               {user?.email || 'idrisjose11@gmail.com'}
             </p>
          </div>
 

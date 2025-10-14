@@ -7,6 +7,7 @@ import Image from "next/image";
 import { getLoggedInUser } from "../../../lib/actions/user.actions";
 import { redirect } from "next/navigation";
 
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -27,10 +28,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const loggedIn = await getLoggedInUser();
 
+    const loggedIn = await getLoggedInUser();
+   
   
-  if (!loggedIn) redirect("/sign-in");
 
   return (
     <html lang="en">

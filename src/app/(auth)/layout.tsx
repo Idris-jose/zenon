@@ -28,7 +28,7 @@ export default async function AuthLayout({
    const loggedIn = await getLoggedInUser();
   
     
-    if (!loggedIn) redirect("/sign-in");
+    
   return (
     <html lang="en">
       <body className={`${archivo.variable} ${inter.variable} antialiased`}>
