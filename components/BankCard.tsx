@@ -2,7 +2,7 @@ import Link from "next/link";
 import { formatAmount } from "../lib/utils";
 import Image from "next/image";
 
-export default function BankCard({account,userName, showBalance=true}: CreditCardProps){
+export default function BankCard({account,userName, showBalance=true ,bankName,accountNumber}: CreditCardProps){
     return(
  <div className="flex flex-col">
     <Link href="/" className="bank-card">
@@ -13,6 +13,8 @@ export default function BankCard({account,userName, showBalance=true}: CreditCar
             {formatAmount(account.currentBalance)}
         </p>
        </div>
+       <p>{bankName}</p>
+       <p>{accountNumber}</p>
        <article className="flex flex-col gap-2">
         <div className="flex justify-between">
             <h1 className="text-12 font-semibold text-white">

@@ -1,24 +1,34 @@
 'use server'
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 import { createAdminClient } from "../appwrite";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createSessionClient } from "../appwrite"
 import { parseStringify } from "../utils";
+import { seedMockData } from "../server/seedMockData";
+
+
 
 export const signIn = async ({email,password}: {email:string,password:string}) => {
     try {
         const { account } = await createAdminClient();
 
-        const response = await account.createEmailPasswordSession({
+        const session = await account.createEmailPasswordSession({
             email,
             password
         });
 
-        return parseStringify(response)
+        (await cookies()).set("my-custom-session", session.secret, {
+            path: "/",
+            httpOnly: true,
+            sameSite: "strict",
+            secure: true,
+        });
+
+        return parseStringify(session)
     } catch (error) {
         console.error('Error',error)
-    }  
+    }
 }
 
 export const signUp = async (userData:SignUpParams) => {
@@ -44,6 +54,9 @@ export const signUp = async (userData:SignUpParams) => {
     sameSite: "strict",
     secure: true,
   });
+
+  // Seed mock data for the new user
+  await seedMockData({ userId: newUserAccount.$id });
 
   return parseStringify(newUserAccount);
     } catch (error) {
@@ -80,4 +93,21 @@ export const logoutAccount= async() => {
     return null
   }
 
+}
+
+export async function getBanks({ userId }: getBanksProps) {
+  try {
+    const { database } = await createSessionClient();
+
+    const banks = await database.listDocuments(
+      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_APPWRITE_ACCOUNTS_COLLECTION_ID!
+    );
+
+    const userBanks = banks.documents.filter((bank: any) => bank.userId === userId);
+
+    return parseStringify(userBanks);
+  } catch (error) {
+    console.error('Error', error);
+  }
 }

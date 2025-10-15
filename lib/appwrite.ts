@@ -27,6 +27,9 @@ const session = cookieStore.get("my-custom-session");
     get account() {
       return new Account(client);
     },
+    get database() {
+      return new Databases(client);
+    },
   };
 }
 

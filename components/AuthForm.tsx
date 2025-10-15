@@ -15,7 +15,6 @@ import { signIn, signUp } from "../lib/actions/user.actions";
 
 export default function AuthForm({ type }:{ type:string}) {
   const router =useRouter()
-    const [user,setUser] = useState<unknown>(null)
     const [isLoading,setIsLoading]= useState(false)
     const [error,setError] = useState('')
     
@@ -42,7 +41,7 @@ export default function AuthForm({ type }:{ type:string}) {
       if(type === 'signUp'){
      const newUser = await signUp(data);
 
-      setUser(newUser)
+      router.push('/')
       }
 
      if(type === 'signin'){
@@ -85,21 +84,13 @@ export default function AuthForm({ type }:{ type:string}) {
 
       <div className="flex flex-col gap-1 md:gap-3">
         <h1 className="text-24 font-semibold text-gray-900 lg:text-36">
-            {user ? 'Link Account' : type === 'signin' ? 'Welcome back' : 'Create Account'}
+            {type === 'signin' ? 'Welcome back' : 'Create Account'}
         </h1>
         <p className="text-16 font-normal text-gray-600">
-           {user ? 'Link your bank account to get started' : type === 'signin' ? 'Sign in to your account' : 'Sign up to get started'}
+           {type === 'signin' ? 'Sign in to your account' : 'Sign up to get started'}
         </p>
       </div>
           </header>
-          {user ? (
-            <div className="flex flex-col gap-4">
-              <Button onClick={() => router.push('/my-banks')} className="bg-[#FF7A00] p-5 font-bold text-lg text-white cursor-pointer">
-                Link Bank Account
-              </Button>
-            </div>
-        ):(
-            <>
                     <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
@@ -158,8 +149,6 @@ export default function AuthForm({ type }:{ type:string}) {
              </Link>
            </footer>
 
-            </>
-        ) }
         </section>
     )
 }
