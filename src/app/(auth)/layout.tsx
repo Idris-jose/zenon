@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
-import { Inter, Archivo } from "next/font/google";
+import { Bricolage_Grotesque, Poppins } from "next/font/google";
 import "../globals.css";
 import { redirect } from "next/navigation";
 import { getLoggedInUser } from "../../../lib/actions/user.actions";
 
-const inter = Inter({
-  variable: "--font-inter",
+const bricolageGrotesque = Bricolage_Grotesque({
+  variable: "--font-bricolage-grotesque",
   subsets: ["latin"],
 });
 
-const archivo = Archivo({
-  variable: "--font-archivo",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["400", "600"],
 });
 
 export const metadata: Metadata = {
@@ -31,7 +32,7 @@ export default async function AuthLayout({
     
   return (
     <html lang="en">
-      <body className={`${archivo.variable} ${inter.variable} antialiased`}>
+      <body className={`${poppins.variable} ${bricolageGrotesque.variable} antialiased`}>
         {children}
       </body>
     </html>

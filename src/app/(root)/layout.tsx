@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Archivo } from "next/font/google";
+import { Bricolage_Grotesque, Poppins } from "next/font/google";
 import "../globals.css";
 import Sidebar from "../../../components/Sidebar";
 import MobileNav from "../../../components/MobileNav";
@@ -8,14 +8,15 @@ import { getLoggedInUser } from "../../../lib/actions/user.actions";
 import { redirect } from "next/navigation";
 
 
-const inter = Inter({
-  variable: "--font-inter",
+const bricolageGrotesque = Bricolage_Grotesque({
+  variable: "--font-bricolage-grotesque",
   subsets: ["latin"],
 });
 
-const archivo = Archivo({
-  variable: "--font-archivo",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["400", "600"],
 });
 
 export const metadata: Metadata = {
@@ -35,8 +36,8 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${archivo.variable} ${inter.variable} antialiased`}>
-        <main className="flex h-screen w-full font-archivo">
+      <body className={`${poppins.variable} ${bricolageGrotesque.variable} antialiased`}>
+        <main className="flex h-screen w-full font-poppins">
           {/* Sidebar — visible only on desktop */}
           <div className="hidden md:block">
             <Sidebar user={loggedIn as unknown as User} />

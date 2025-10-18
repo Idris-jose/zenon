@@ -5,6 +5,8 @@ import RightSidebar from "../../../components/RightSidebar";
 import { getLoggedInUser } from "../../../lib/actions/user.actions";
 import { getUserBankData } from "../../../lib/actions/bank.actions";
 import TransactionHistory from "./transaction-history/page";
+import AddBankModal from "../../../components/AddBankModal";
+
 
 export default async function Home() {
   const loggedIn = await getLoggedInUser();
@@ -35,6 +37,9 @@ export default async function Home() {
     <section className="home">
       <div className="home-content">
         <header className="home-header text-3xl">
+     
+        <AddBankModal/>
+          
           <HeaderBox
             type="greeting"
             title="Welcome"
@@ -62,7 +67,10 @@ export default async function Home() {
         </div>
       </div>
 
-      <RightSidebar user={user} transactions={transactions} banks={accounts} />
+      {/* Right sidebar - hidden on mobile/tablet, visible on desktop */}
+      <div className="hidden lg:block">
+        <RightSidebar user={user} transactions={transactions} banks={accounts} />
+      </div>
     </section>
   );
 }

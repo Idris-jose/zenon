@@ -1,5 +1,7 @@
-# TODO: Ensure Transactions from Database are Reflected in UI
+# TODO: Redesign CSS Theme to Black and Orange with Glow Effects
 
-- [x] Update `src/app/(root)/transaction-history/page.tsx` to fetch and display the full list of user transactions from the database.
-- [x] Optionally, enhance `components/RightSidebar.tsx` to display a summary or list of recent transactions in the sidebar.
-- [x] Test the changes by running the app locally and verifying transactions appear in the UI after signup/signin.
+- [ ] Update CSS variables in :root for pure black backgrounds and orange accents
+- [ ] Modify shadow variables to include inner shadows, outer borders, and glow effects
+- [ ] Update utility classes for buttons, cards, and elements with new colors and effects
+- [ ] Add glossy effects to clear buttons using gradients and backdrop filters
+- [ ] Test the new design for visual consistency

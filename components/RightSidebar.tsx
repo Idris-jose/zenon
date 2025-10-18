@@ -1,9 +1,18 @@
+'use client'
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import BankCard from "./BankCard";
+import AddBankModal from "./AddBankModal";
+import { Button } from "@/components/ui/button";
+
 export default function RightSidebar( { user,transactions,banks }:RightSidebarProps ){
-    return(
-        <aside className="right-sidebar " >
+    const [open, setOpen] = useState(false);
+  
+  return(
+        <aside className="right-sidebar w-full lg:w-[355px]" >
+          <AddBankModal isOpen={open} onClose={() => setOpen(false)} userId={user.$id} />
+
          <section className="flex flex-col pb-8">
           <div className="profile-banner"/>
           <div className="profile">
@@ -34,9 +43,11 @@ export default function RightSidebar( { user,transactions,banks }:RightSidebarPr
               height={20}
               alt="plus "
             />
+            <Button onClick={() => setOpen(true)}>
             <h2 className="text-14 font-semibold text-gray-600">
               Add bank
             </h2>
+            </Button>
             </Link>
             </div>
              {banks?.length >0 && (
