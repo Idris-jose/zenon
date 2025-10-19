@@ -1,7 +1,22 @@
-# TODO: Redesign CSS Theme to Black and Orange with Glow Effects
+# TODO: Make Payment History Page Functional
 
-- [ ] Update CSS variables in :root for pure black backgrounds and orange accents
-- [ ] Modify shadow variables to include inner shadows, outer borders, and glow effects
-- [ ] Update utility classes for buttons, cards, and elements with new colors and effects
-- [ ] Add glossy effects to clear buttons using gradients and backdrop filters
-- [ ] Test the new design for visual consistency
+## Current Status
+- Page uses mock data instead of real DB transactions
+- Displays hardcoded balance and account info
+- No real filtering or pagination
+
+## Tasks
+- [x] Replace mock transactions with real data from DB
+- [x] Map DB transaction fields to display format
+- [x] Calculate real balance from user accounts
+- [x] Display real account information
+- [ ] Implement account selection filtering (click on bank to filter transactions)
+- [ ] Add real pagination for transactions
+- [ ] Implement transaction filters (status, category, date)
+- [ ] Add proper error handling for empty states
+- [ ] Test with seeded data
+
+## Dependencies
+- lib/actions/bank.actions.ts (getUserBankData)
+- lib/utils.ts (formatDateTime, getTransactionStatus)
+- types/index.d.ts (Transaction type)

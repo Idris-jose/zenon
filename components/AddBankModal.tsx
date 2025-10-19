@@ -4,7 +4,7 @@ import React, { useState, useTransition } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { addBankAccount } from "../lib/actions/bank.actions"; // 👈 import the server action
+import { addBankAccount } from "../lib/actions/bank.actions";
 import { useRouter } from "next/navigation";
 
 interface AddBankModalProps {
@@ -44,7 +44,7 @@ export default function AddBankModal({ isOpen, onClose, userId }: AddBankModalPr
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-sm bg-black">
+      <DialogContent className="max-w-sm bg-black text-white">
         <DialogHeader>
           <DialogTitle>Add Bank Account</DialogTitle>
           <DialogDescription>Enter your bank details below.</DialogDescription>

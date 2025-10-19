@@ -38,12 +38,12 @@
   --color-black-2: #0a0a0a;
 
   --color-gray-25: #000000;
-  --color-gray-200: #1a1a1a;
-  --color-gray-300: #2a2a2a;
-  --color-gray-500: #666666;
-  --color-gray-600: #4d4d4d;
-  --color-gray-700: #333333;
-  --color-gray-900: #cccccc;
+  --color-gray-200: #000000;
+  --color-gray-300: #000000;
+  --color-gray-500: #000000;
+  --color-gray-600: #000000;
+  --color-gray-700: #000000;
+  --color-gray-900: #000000;
 
   /* === Backgrounds === */
 
@@ -83,12 +83,12 @@
   body {
     font-family: var(--font-bricolage-grotesque);
 
-    color: #e5e7eb;
+    color: #000000;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-poppins);
-    color: #f9fafb;
+    color: #000000;
   }
 
   /* Hide scrollbar for Chrome, Safari and Opera */
@@ -803,3 +803,4 @@
     color: #1f2937;
   }
 }
+
