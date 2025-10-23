@@ -1,17 +1,46 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { formSchema } from "../../../../lib/transfervalidation";
+
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeftRight, Building2, CreditCard, DollarSign } from "lucide-react";
 import { getUserBankData, transferFunds } from "../../../../lib/actions/bank.actions";
 import { getLoggedInUser } from "../../../../lib/actions/user.actions";
 
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+
+
+
+
+
 export default function TransferFundsPage() {
   const [accounts, setAccounts] = useState<any[]>([]);
-  const [form, setForm] = useState({ from: "", to: "", amount: "" });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+
+  
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      from: "",
+      to: "",
+      amount: "",
+    },
+  })
 
   useEffect(() => {
     const fetchAccounts = async () => {
@@ -25,19 +54,12 @@ export default function TransferFundsPage() {
     fetchAccounts();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setLoading(true);
     setMessage("");
 
-    if (form.from === form.to) {
+    if (values.from === values.to) {
       setMessage("You cannot transfer to the same account.");
-      setLoading(false);
-      return;
-    }
-
-    if (parseFloat(form.amount) <= 0) {
-      setMessage("Please enter a valid amount.");
       setLoading(false);
       return;
     }
@@ -51,14 +73,14 @@ export default function TransferFundsPage() {
       }
 
       const result = await transferFunds({
-        fromAccountId: form.from,
-        toAccountId: form.to,
-        amount: parseFloat(form.amount),
+        fromAccountId: values.from,
+        toAccountId: values.to,
+        amount: parseFloat(values.amount),
         userId: loggedIn.$id,
       });
 
       setMessage(result.message);
-      setForm({ from: "", to: "", amount: "" });
+      form.reset();
 
       // Refresh accounts to show updated balances
       const { accounts: updatedAccounts } = await getUserBankData(loggedIn.$id);
@@ -70,130 +92,159 @@ export default function TransferFundsPage() {
     }
   };
 
-  const selectedFromAccount = accounts.find(acc => acc.$id === form.from);
-  const selectedToAccount = accounts.find(acc => acc.$id === form.to);
+  const selectedFromAccount = accounts.find(acc => acc.$id === form.watch("from"));
+  const selectedToAccount = accounts.find(acc => acc.$id === form.watch("to"));
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen p-4 bg-white">
       {/* Header */}
-      <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-8 px-4 shadow-lg">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center gap-3 mb-2">
-            <ArrowLeftRight className="w-8 h-8" />
+    
+       
+          <div className="flex items-center gap-3 mt-3 mb-1">
             <h1 className="text-3xl font-bold">Transfer Funds</h1>
           </div>
-          <p className="text-orange-100">Move money securely between your accounts</p>
-        </div>
-      </div>
-
+          <p className="text-black">Move money securely between your accounts</p>
+    
+  
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="">
         <div className="bg-white border-2 border-gray-100 rounded-2xl shadow-xl p-8">
-          <div className="space-y-6">
-            {/* From Account Section */}
-            <div className="space-y-3">
-              <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                <Building2 className="w-4 h-4 text-orange-500" />
-                From Account
-              </label>
-              <select
-                title="select source account"
-                value={form.from}
-                onChange={(e) => setForm({ ...form, from: e.target.value })}
-                className="w-full border-2 border-gray-200 rounded-xl p-4 bg-white text-gray-800 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all outline-none text-base"
-                required
-              >
-                <option value="">Select source account</option>
-                {accounts.map((acc) => (
-                  <option key={acc.$id} value={acc.$id}>
-                    {acc.bankName} — {acc.accountNumber} (${acc.balance.toFixed(2)})
-                  </option>
-                ))}
-              </select>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              {/* From Account Section */}
+              <FormField
+                control={form.control}
+                name="from"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2 text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                      <Building2 className="w-4 h-4 text-orange-500" />
+                      From Account
+                    </FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="w-full border-2 border-gray-200 rounded-xl p-4 bg-white text-gray-800 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all outline-none text-base">
+                          <SelectValue placeholder="Select source account" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="bg-white">
+                        {accounts.map((acc) => (
+                          <SelectItem key={acc.$id} value={acc.$id}>
+                            {acc.bankName} — {acc.accountNumber} (${acc.balance.toFixed(2)})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormDescription>
+                      Select the account to transfer funds from.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               {selectedFromAccount && (
                 <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
                   <p className="text-sm text-gray-600">Available Balance</p>
                   <p className="text-2xl font-bold text-gray-900">${selectedFromAccount.balance.toFixed(2)}</p>
                 </div>
               )}
-            </div>
 
-            {/* Transfer Direction Indicator */}
-            <div className="flex justify-center">
-              <div className="bg-orange-100 rounded-full p-3">
-                <ArrowLeftRight className="w-6 h-6 text-orange-600" />
+              {/* Transfer Direction Indicator */}
+              <div className="flex justify-center">
+                <div className="bg-orange-100 rounded-full p-3">
+                  <ArrowLeftRight className="w-6 h-6 text-orange-600" />
+                </div>
               </div>
-            </div>
 
-            {/* To Account Section */}
-            <div className="space-y-3">
-              <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                <CreditCard className="w-4 h-4 text-orange-500" />
-                To Account
-              </label>
-              <select
-                title="select destination account"
-                value={form.to}
-                onChange={(e) => setForm({ ...form, to: e.target.value })}
-                className="w-full border-2 border-gray-200 rounded-xl p-4 bg-white text-gray-800 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all outline-none text-base"
-                required
-              >
-                <option value="">Select destination account</option>
-                {accounts.map((acc) => (
-                  <option key={acc.$id} value={acc.$id}>
-                    {acc.bankName} — {acc.accountNumber} (${acc.balance.toFixed(2)})
-                  </option>
-                ))}
-              </select>
+              {/* To Account Section */}
+              <FormField
+                control={form.control}
+                name="to"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2 text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                      <CreditCard className="w-4 h-4 text-orange-500" />
+                      To Account
+                    </FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="w-full border-2 border-gray-200 rounded-xl p-4 bg-white text-gray-800 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all outline-none text-base">
+                          <SelectValue placeholder="Select destination account" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {accounts.map((acc) => (
+                          <SelectItem key={acc.$id} value={acc.$id}>
+                            {acc.bankName} — {acc.accountNumber} (${acc.balance.toFixed(2)})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormDescription>
+                      Select the account to transfer funds to.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               {selectedToAccount && (
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                   <p className="text-sm text-gray-600">Current Balance</p>
                   <p className="text-2xl font-bold text-gray-900">${selectedToAccount.balance.toFixed(2)}</p>
                 </div>
               )}
-            </div>
 
-            {/* Amount Section */}
-            <div className="space-y-3">
-              <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                <DollarSign className="w-4 h-4 text-orange-500" />
-                Transfer Amount
-              </label>
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-lg font-semibold">$</span>
-                <Input
-                  type="number"
-                  step="0.01"
-                  min="0.01"
-                  value={form.amount}
-                  onChange={(e) => setForm({ ...form, amount: e.target.value })}
-                  placeholder="0.00"
-                  className="pl-8 pr-4 py-6 text-lg border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-                  required
-                />
+              {/* Amount Section */}
+              <FormField
+                control={form.control}
+                name="amount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2 text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                      <DollarSign className="w-4 h-4 text-orange-500" />
+                      Transfer Amount
+                    </FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-lg font-semibold">$</span>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          min="0.01"
+                          placeholder="0.00"
+                          className="pl-8 pr-4 py-6 text-lg border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                          {...field}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormDescription>
+                      Enter the amount to transfer.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Action Buttons */}
+              <div className="flex gap-4 pt-4">
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={() => form.reset()}
+                  className="flex-1 py-6 text-base border-2 border-gray-300 hover:bg-gray-50 rounded-xl"
+                >
+                  Reset
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="flex-1 py-6 text-base bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
+                >
+                  {loading ? "Processing..." : "Complete Transfer"}
+                </Button>
               </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-4 pt-4">
-              <Button
-                variant="outline"
-                type="button"
-                onClick={() => setForm({ from: "", to: "", amount: "" })}
-                className="flex-1 py-6 text-base border-2 border-gray-300 hover:bg-gray-50 rounded-xl"
-              >
-                Reset
-              </Button>
-              <Button
-                type="button"
-                onClick={handleSubmit}
-                disabled={loading}
-                className="flex-1 py-6 text-base bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
-              >
-                {loading ? "Processing..." : "Complete Transfer"}
-              </Button>
-            </div>
-          </div>
+            </form>
+          </Form>
 
           {/* Message Display */}
           {message && (

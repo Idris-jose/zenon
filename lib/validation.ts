@@ -7,9 +7,7 @@ export const formSchema = ( type:string) => z.object({
   city: type === 'signin' ? z.string().optional() : z.string().min(5, "city must be at least 5 characters"),
   state :type === 'signin' ? z.string().optional() :  z.string().min(2, "State must be at least 2 characters"),
   postalCode:  type === 'signin' ? z.string().optional() : z.string().regex(/^\d{5}$/, "Postal code must be 5 digits"),
-  dateOfBirth:  type === 'signin' ? z.string().optional() : z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
+  dateOfBirth:  type === 'signin' ? z.string().optional() : z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
   ssn:  type === 'signin' ? z.string().optional() : z.string().regex(/^\d{4}$/, "SSN must be 4 digits"),
   username:  type === 'signin' ? z.string().optional() : z.string().min(3, "Username must be at least 3 characters"),
   

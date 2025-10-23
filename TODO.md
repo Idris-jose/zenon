@@ -1,22 +1,10 @@
-# TODO: Make Payment History Page Functional
-
-## Current Status
-- Page uses mock data instead of real DB transactions
-- Displays hardcoded balance and account info
-- No real filtering or pagination
+# TODO: Update Payment-Transfer Page UI and Layout
 
 ## Tasks
-- [x] Replace mock transactions with real data from DB
-- [x] Map DB transaction fields to display format
-- [x] Calculate real balance from user accounts
-- [x] Display real account information
-- [ ] Implement account selection filtering (click on bank to filter transactions)
-- [ ] Add real pagination for transactions
-- [ ] Implement transaction filters (status, category, date)
-- [ ] Add proper error handling for empty states
-- [ ] Test with seeded data
-
-## Dependencies
-- lib/actions/bank.actions.ts (getUserBankData)
-- lib/utils.ts (formatDateTime, getTransactionStatus)
-- types/index.d.ts (Transaction type)
+- [ ] Update header with professional typography and better spacing
+- [ ] Restructure layout to two-column design (left: form inputs, right: transfer summary)
+- [ ] Move From Account, To Account, and Amount inputs to left column
+- [ ] Create right column with transfer summary/preview (selected accounts, balances, amount, confirm button)
+- [ ] Improve overall spacing, add subtle shadows, and structure sections for bank-like appearance
+- [ ] Ensure mobile responsiveness for the new layout
+- [ ] Test form submission and error handling after changes
